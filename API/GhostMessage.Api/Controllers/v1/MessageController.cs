@@ -15,7 +15,12 @@ public class MessageController : BaseApiController
 	[HttpGet]
 	public async Task<IActionResult> EncryptMessage(string message, string passphrase)
 	{
+		// Sanitize input.
+		message = message.Trim();
+		passphrase = passphrase.Trim();
+
 		var iv = this._cryptographyService.GenerateInitializationVector();
+
 		var encrypted = await this._cryptographyService.EncryptAsync(message, iv, passphrase);
 		var decrypted = await this._cryptographyService.DecryptAsync(encrypted, iv, passphrase);
 
