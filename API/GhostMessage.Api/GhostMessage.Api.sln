@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GhostMessage.Api", "GhostMessage.Api.csproj", "{3A907C5A-CCE1-44D0-8A00-C30F5A657F65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhostMessage.Shared", "..\GhostMessage.Shared\GhostMessage.Shared.csproj", "{4F8C47AB-4261-4213-B7D7-01AF54B73B99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GhostMessage.Shared", "..\GhostMessage.Shared\GhostMessage.Shared.csproj", "{4F8C47AB-4261-4213-B7D7-01AF54B73B99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
