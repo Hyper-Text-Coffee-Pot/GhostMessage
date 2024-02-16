@@ -19,11 +19,8 @@ public class MessageController : BaseApiController
 		message = message.Trim();
 		passphrase = passphrase.Trim();
 
-		var iv = this._cryptographyService.GenerateInitializationVector();
+		var encrypted = await this._cryptographyService.EncryptAsync(message, passphrase);
 
-		var encrypted = await this._cryptographyService.EncryptAsync(message, iv, passphrase);
-		var decrypted = await this._cryptographyService.DecryptAsync(encrypted, iv, passphrase);
-
-		return Ok($"Encrypted value: {BitConverter.ToString(encrypted)} -- Decrypted value: {decrypted}");
+		return Ok($"Encrypted value: {BitConverter.ToString(encrypted)}");
 	}
 }

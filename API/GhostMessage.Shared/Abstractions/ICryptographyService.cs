@@ -6,7 +6,5 @@ public interface ICryptographyService
 
 	byte[] DeriveKeyFromPassword(string password);
 
-	Task<byte[]> EncryptAsync(string clearText, byte[] initializationVector, string passphrase);
-
-	byte[] GenerateInitializationVector();
+	Task<byte[]> EncryptAsync(string clearText, string passphrase);
 }
