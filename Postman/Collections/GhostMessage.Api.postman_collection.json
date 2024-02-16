@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "4d8d613b-b52e-420e-8594-4bc6f6ea537a",
+		"name": "GhostMessage.Api",
+		"description": "Web API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32980985"
+	},
+	"item": [
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44301/v1/Message/encrypt?message=test&passphrase=test",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44301",
+					"path": [
+						"v1",
+						"Message",
+						"encrypt"
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "test"
+						},
+						{
+							"key": "passphrase",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
