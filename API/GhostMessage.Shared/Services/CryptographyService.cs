@@ -23,37 +23,42 @@ public class CryptographyService : ICryptographyService
 
 	public byte[] DeriveKeyFromPassword(string password)
 	{
-		var emptySalt = Array.Empty<byte>();
+		var salt = this.GenerateSalt();
 		var iterations = 1000;
 		var desiredKeyLength = 16; // 16 bytes equal 128 bits.
 		var hashMethod = HashAlgorithmName.SHA384;
 		return Rfc2898DeriveBytes.Pbkdf2(Encoding.Unicode.GetBytes(password),
-										 emptySalt,
+										 salt,
 										 iterations,
 										 hashMethod,
 										 desiredKeyLength);
 	}
 
-	public async Task<byte[]> EncryptAsync(string clearText, byte[] initializationVector, string passphrase)
+	public async Task<byte[]> EncryptAsync(string clearText, string passphrase)
 	{
-		using Aes aes = Aes.Create();
-		aes.Key = DeriveKeyFromPassword(passphrase);
-		aes.IV = initializationVector;
+		using (Aes aes = Aes.Create())
+		{
+			aes.Key = DeriveKeyFromPassword(passphrase);
 
-		using MemoryStream output = new();
-		using CryptoStream cryptoStream = new(output, aes.CreateEncryptor(), CryptoStreamMode.Write);
+			using MemoryStream output = new();
+			using CryptoStream cryptoStream = new(output, aes.CreateEncryptor(), CryptoStreamMode.Write);
 
-		await cryptoStream.WriteAsync(Encoding.Unicode.GetBytes(clearText));
-		await cryptoStream.FlushFinalBlockAsync();
+			await cryptoStream.WriteAsync(Encoding.Unicode.GetBytes(clearText));
+			await cryptoStream.FlushFinalBlockAsync();
 
-		return output.ToArray();
+			return output.ToArray();
+		}
 	}
 
-	// create a c# initialization vector method
-	public byte[] GenerateInitializationVector()
+	public byte[] GenerateSalt()
 	{
-		using var aes = Aes.Create();
-		aes.GenerateIV();
-		return aes.IV;
+		byte[] salt = new byte[16];
+
+		using (var rng = new RNGCryptoServiceProvider())
+		{
+			rng.GetBytes(salt);
+		}
+
+		return salt;
 	}
 }

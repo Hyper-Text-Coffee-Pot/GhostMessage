@@ -2,7 +2,8 @@
 
 namespace GhostMessage.Api.Controllers.v1;
 
-[Route("v{version:apiVersion}/message")]
+[Produces("application/json")]
+[ApiController]
 public class MessageController : BaseApiController
 {
 	private readonly ICryptographyService _cryptographyService;
@@ -13,17 +14,28 @@ public class MessageController : BaseApiController
 	}
 
 	[HttpGet]
+	[Route("encrypt")]
 	public async Task<IActionResult> EncryptMessage(string message, string passphrase)
 	{
 		// Sanitize input.
 		message = message.Trim();
 		passphrase = passphrase.Trim();
 
-		var iv = this._cryptographyService.GenerateInitializationVector();
+		var encrypted = await this._cryptographyService.EncryptAsync(message, passphrase);
 
-		var encrypted = await this._cryptographyService.EncryptAsync(message, iv, passphrase);
-		var decrypted = await this._cryptographyService.DecryptAsync(encrypted, iv, passphrase);
-
-		return Ok($"Encrypted value: {BitConverter.ToString(encrypted)} -- Decrypted value: {decrypted}");
+		return Ok($"Encrypted value: {Convert.ToBase64String(encrypted)}");
 	}
+
+	//[HttpGet]
+	//[Route("decrypt")]
+	//public async Task<IActionResult> DecryptMessage(string message, string passphrase)
+	//{
+	//	// Sanitize input.
+	//	message = message.Trim();
+	//	passphrase = passphrase.Trim();
+
+	//	var decrypted = await this._cryptographyService.DecryptAsync(encrypted, passphrase);
+
+	//	return Ok($"Decrypted value: {decrypted}");
+	//}
 }
